@@ -103,8 +103,10 @@ int main(int argc, char **argv)
 
   while(fscanf(fp, "%s %s %s %s %s %lf %lf %lf %lf %lf",
                c1, c2, c3, c4, c5, &a1, &a2, &a3, &b1, &b2) != EOF) {
-    fprintf(wfp, "%f %f %f %f\n", a1, a2, a3, b2);
-    main_parm->number_of_lines++;
+    if (*c1 == 'A'){ 
+      fprintf(wfp, "%f %f %f %f\n", a1, a2, a3, b2);
+      main_parm->number_of_lines++;
+    } 
   }
 
   fclose(fp);
