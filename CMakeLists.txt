@@ -1,4 +1,9 @@
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.12)
+
+cmake_policy(SET CMP0054 OLD)
+cmake_policy(SET CMP0042 NEW)
+set(CMAKE_MACOSX_RPATH 1)
+
 project(tabipb)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -74,7 +79,7 @@ include_directories("/src")
   get_filename_component (C_COMPILER_NAME ${CMAKE_C_COMPILER} NAME)
 
   if (C_COMPILER_NAME MATCHES "gcc.*")
-    set (CMAKE_C_FLAGS_RELEASE "-c -O3")
+    #set (CMAKE_C_FLAGS_RELEASE "-c -O3")
     set (CMAKE_C_FLAGS_DEBUG   "")
   elseif (C_COMPILER_NAME MATCHES "icc.*")
     set (CMAKE_C_FLAGS_RELEASE "-fast -c")
@@ -129,7 +134,7 @@ if(ENABLE_TABIPB_APBS)
   get_filename_component (C_COMPILER_NAME ${CMAKE_C_COMPILER} NAME)
 
   if (C_COMPILER_NAME MATCHES "gcc.*")
-    set (CMAKE_C_FLAGS_RELEASE "-c -O3")
+    #set (CMAKE_C_FLAGS_RELEASE "-c -O3")
     set (CMAKE_C_FLAGS_DEBUG   "")
   elseif (C_COMPILER_NAME MATCHES "icc.*")
     set (CMAKE_C_FLAGS_RELEASE "-fast -c")
