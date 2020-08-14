@@ -1,5 +1,5 @@
 # TABIPB
-This TABIPB repo serves as a submodule to APBS, and is currently maintained nonly for compatibility with APBS. The new repository for the treecode-accelerated boundary integral Poisson--Boltzmann solve is located at <https://github.com/Treecodes/TABI-PB>.
+This TABIPB repo serves as a submodule to APBS, and is currently maintained only for compatibility with APBS. The new repository for the treecode-accelerated boundary integral Poisson--Boltzmann solve is located at <https://github.com/Treecodes/TABI-PB>.
 
 ## Build Instructions
 To build as an independent executable:
