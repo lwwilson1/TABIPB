@@ -53,6 +53,7 @@ if(ENABLE_TABIPB_SPHINX)
               src/dscal.c
               src/dtrsv.c
               src/f2c.h
+              src/gl_variables.c
               src/gl_variables.h
               src/gmres.c
               src/readin.c
@@ -94,13 +95,13 @@ include_directories("/src")
         add_executable(tabipb
           src/main.c src/tabipb.c src/gmres.c src/daxpy.c src/dcopy.c src/ddot.c
           src/dgemv.c src/dnrm2.c src/drot.c src/drotg.c src/dscal.c src/d_sign.c
-          src/dtrsv.c src/readin.c src/treecode.c
+          src/dtrsv.c src/readin.c src/treecode.c src/gl_variables.c
           src/xmalloc.c)
   else()
         add_executable(tabipb
           src/main.c src/tabipb.c src/gmres.c src/daxpy.c src/dcopy.c src/ddot.c
           src/dgemv.c src/dnrm2.c src/drot.c src/drotg.c src/dscal.c src/d_sign.c
-          src/dtrsv.c src/readin.c src/pp_timer.c src/treecode.c
+          src/dtrsv.c src/readin.c src/pp_timer.c src/treecode.c src/gl_variables.c
           src/xmalloc.c)
   endif()
 
@@ -147,7 +148,7 @@ if(ENABLE_TABIPB_APBS)
   set (LIBFILES
     src/TABIPBWrap.c src/tabipb.c src/gmres.c src/daxpy.c src/dcopy.c src/ddot.c
     src/dgemv.c src/dnrm2.c src/drot.c src/drotg.c src/dscal.c src/d_sign.c
-    src/dtrsv.c src/readin.c src/treecode.c src/xmalloc.c)
+    src/dtrsv.c src/readin.c src/treecode.c src/gl_variables.c src/xmalloc.c)
 
   message(***** ${CMAKE_INSTALL_PREFIX} *****)
 
