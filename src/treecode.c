@@ -24,52 +24,51 @@
 
 
 /* runtime parameters */
-int numpars, order, maxparnode, iflag, forcedim;
-double theta;
-double center[3], r0[3], v0[3];
+static int numpars, order, maxparnode, iflag, forcedim;
+static double theta;
+static double center[3], r0[3], v0[3];
 
 
 /* arrays for coordinates, charge, potential & force */
-double *x, *y, *z, *q;
-double *x_copy, *y_copy, *z_copy, *q_copy;
-double **tforce, **dforce;
-int *orderind, *n_clst;
+static double *x, *y, *z, *q;
+static double *x_copy, *y_copy, *z_copy, *q_copy;
+static double **tforce, **dforce;
+static int *orderind, *n_clst;
 
 
 /* timing variables */
-double timebeg, timeend;
+static double timebeg, timeend;
 
 
 /* local variables */
-double xyzminmax[6];
-double t1, abserr, relerr, adsinf_err, relinf_err;
-double f_inferr[3], f_relinferr[3], t[3];
+static double xyzminmax[6];
+static double t1, abserr, relerr, adsinf_err, relinf_err;
+static double f_inferr[3], f_relinferr[3], t[3];
 
-double ***tchg, ***schg;
-double ****der_cof;
-int kk[16][3];
+static double ***tchg, ***schg;
+static double ****der_cof;
+static int kk[16][3];
 
 
 /* global variables for taylor expansions */
-int torder, torder2, torderlim;
-double *cf, *cf1, *cf2, *cf3;
-double ***a, ***b;
+static int torder, torder2, torderlim;
+static double *cf, *cf1, *cf2, *cf3;
+static double ***a, ***b;
 
 
 /* global variables to track tree levels  */
-int minlevel, maxlevel;
+static int minlevel, maxlevel;
 
 
 /* global variables used when computing potential/force */
-int orderoffset;
-double tarpos[3], tarq[3];
-double tarchr;
+static int orderoffset;
+static double tarpos[3], tarq[3];
+static double tarchr;
 
 
 /* global variables for position and charge storage */
 /* arrays are not copied in this version!! orderarr is till valid*/
 int *orderarr;
-double *xcopy,*ycopy,*zcopy,*qcopy;
 
 
 /* node pointer and node struct declarations */
@@ -85,7 +84,7 @@ typedef struct tnode{
   struct tnode** child;
 }tnode;
 
-tnode* troot;
+static tnode* troot;
 
 
 int treecode_initialization(int main_order,int main_maxparnode,double main_theta) {
@@ -197,7 +196,7 @@ int treecode_initialization(int main_order,int main_maxparnode,double main_theta
     for (j=0;j<order+1;j++){
       for (k=0;k<order+1;k++){
         for (idx=0;idx<16;idx++){
-          der_cof[i][j][k][idx]=der_cof[i][j][k][idx]*one_over_4pi;
+          der_cof[i][j][k][idx]=der_cof[i][j][k][idx] * TABIPB_ONE_OVER_4PI;
         }
       }
     }
@@ -1163,7 +1162,7 @@ int compp_direct_pb(double peng[2],int ibeg,int iend,double *tpoten_old){
     sumrs=r_s[0]*r_s[0]+r_s[1]*r_s[1]+r_s[2]*r_s[2];
     rs=sqrt(sumrs);
     irs=1/rs;
-    G0=one_over_4pi*irs;
+    G0=TABIPB_ONE_OVER_4PI*irs;
     kappa_rs=kappa*rs;
     exp_kappa_rs=exp(-kappa_rs);
     Gk=exp_kappa_rs*G0;

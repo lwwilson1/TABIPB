@@ -53,7 +53,6 @@ int tabipb(TABIPBparm *parm, TABIPBvars *vars) {
   extern int output_potential();
 
   /* variables used to compute potential solution */
-  double units_para;
   double *chrptl;
   extern int comp_pot(TABIPBvars *vars, double *chrptl);
 
@@ -80,13 +79,13 @@ int tabipb(TABIPBparm *parm, TABIPBvars *vars) {
   printf("\nSetting up the TABI input...\n");
 
   /***************constant*****************/
-  pi = 3.14159265358979324;
-  one_over_4pi = 0.079577471545948;
-  kcal2j = 4.184;
-  bulk_coef = 2529.12179861515279; /* constant without temperature */
-  units_coef = 332.0716 * kcal2j;
+ // pi = 3.14159265358979324;
+//  one_over_4pi = 0.079577471545948;
+//  kcal2j = 4.184;
+//  bulk_coef = 2529.12179861515279; /* constant without temperature */
+//  units_coef = 332.0716 * kcal2j;
   eps = parm->epsw/parm->epsp;
-  kappa2 = bulk_coef * parm->bulk_strength / parm->epsw / parm->temp;
+  kappa2 = TABIPB_BULK_COEF * parm->bulk_strength / parm->epsw / parm->temp;
   kappa = sqrt(kappa2);
 
   /*read charge coodinates, charges and radius*/
@@ -118,8 +117,6 @@ int tabipb(TABIPBparm *parm, TABIPBvars *vars) {
          &resid, &matvec, psolve, &info);
 
   /* the solvation energy computation */
-  units_para = 2.0 * units_coef * pi;
-
   chrptl = (double *) calloc(nface, sizeof(double));
   comp_pot(vars, chrptl);
 
@@ -149,8 +146,8 @@ int tabipb(TABIPBparm *parm, TABIPBvars *vars) {
     //printf("the couleng is %f,%f\n",couleng,dist);
   }
 
-  soleng = soleng * units_para;
-  couleng = couleng * units_coef;
+  soleng = soleng * TABIPB_UNITS_PARA;
+  couleng = couleng * TABIPB_UNITS_COEF;
   vars->soleng = soleng;
   vars->couleng = couleng;
 
@@ -227,7 +224,7 @@ int comp_source(TABIPBparm *parm, TABIPBvars *vars) {
                         cos_theta = cos_theta * irs;
 
   /* G0 = 1/(4pi*||r_s||_2) */
-                        G0 = one_over_4pi;
+                        G0 = TABIPB_ONE_OVER_4PI;
                         G0 = G0 * irs;
 
   /* G1 = cos_theta*G0/||r_s||_2 */
@@ -286,7 +283,7 @@ int comp_pot(TABIPBvars *vars, double *chrptl) {
                         rs = sqrt(sumrs);
                         irs = 1 / rs;
 
-                        G0 = one_over_4pi;
+                        G0 = TABIPB_ONE_OVER_4PI;
                         G0 = G0 * irs;
                         kappa_rs = kappa * rs;
                         exp_kappa_rs = exp(-kappa_rs);
@@ -316,7 +313,7 @@ int comp_pot(TABIPBvars *vars, double *chrptl) {
 int output_potential(TABIPBvars *vars) {
 
         int i, j, k, jerr, nface_vert;
-        double tot_length, loc_length, aa[3], dot_aa, para_temp, phi_star;
+        double tot_length, loc_length, aa[3], dot_aa, phi_star;
         int **ind_vert;
         double *xtemp, *xyz_temp;
 
@@ -325,7 +322,6 @@ int output_potential(TABIPBvars *vars) {
 
         nface_vert = 15; /* one vertex could have been involved
                             in at most 11 triangles, 15 is safe */
-        para_temp = units_coef * 4 * pi;
 
         if ((xtemp = (double *) calloc(2 * nface, sizeof(double)))  == NULL) {
                 printf("Error in allocating xtemp!\n");
@@ -396,11 +392,11 @@ int output_potential(TABIPBvars *vars) {
         }
 
         for (i = 0; i < 2 * nface; i++)
-                xvct[i] = xvct[i] * para_temp;
+                xvct[i] = xvct[i] * TABIPB_PARA_TEMP;
 
         for (i = 0; i < nspt; i++) {
-                vars->vert_ptl[i] = vars->vert_ptl[i] * para_temp;
-                vars->vert_ptl[i + nspt] = vars->vert_ptl[i + nspt] * para_temp;
+                vars->vert_ptl[i] = vars->vert_ptl[i] * TABIPB_PARA_TEMP;
+                vars->vert_ptl[i + nspt] = vars->vert_ptl[i + nspt] * TABIPB_PARA_TEMP;
         }
 
         if ((vars->xvct = (double *) calloc(2 * nface, sizeof(double))) == NULL) {
@@ -597,7 +593,7 @@ int *matvec_direct(double *alpha, double *x, double *beta, double *y)
                                 sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
                                 rs = sqrt(sumrs);
                                 irs = 1 / rs;
-                                G0 = one_over_4pi;
+                                G0 = TABIPB_ONE_OVER_4PI;
                                 G0 = G0 * irs;
                                 kappa_rs = kappa * rs;
                                 exp_kappa_rs = exp(-kappa_rs);
