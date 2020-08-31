@@ -21,8 +21,19 @@
 #include "TABIPBstruct.h"
 
 
-/*constant variables */
-extern double pi, one_over_4pi, kcal2j, bulk_coef, units_coef, epsw, epsp, eps;
+/*consts */
+#define TABIPB_PI            3.14159265358979324
+#define TABIPB_ONE_OVER_4PI  0.079577471545948
+#define TABIPB_KCAL2J        4.184
+#define TABIPB_BULK_COEF     2529.12179861515279 /* constant w/o temp */
+#define TABIPB_UNITS_COEF    1389.3875744 /* 332.0716 * kcal2j */
+#define TABIPB_PARA_TEMP     17459.5591868959 /* units_coef * 4 * pi */
+#define TABIPB_UNITS_PARA    8729.779593448 /* units_coef * 2 * pi */
+
+
+/*runtime constant variables */
+//extern double pi, one_over_4pi, kcal2j, bulk_coef, units_coef;
+extern double epsw, epsp, eps;
 extern double bulk_strength, kappa2, kappa;
 
 
